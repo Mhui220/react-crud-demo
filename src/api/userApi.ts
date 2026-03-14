@@ -17,6 +17,11 @@ export const createUser = async (user: { name: string; email: string }) => {
   return res.json()
 }
 
+export const getUserDetails = async (id: string) => {
+  const res = await fetch(`${API_URL}/${id}`)
+  return res.json()
+}
+
 export const editUser = async (id: string, user: { name: string; email: string }) => {
   const res = await fetch(`${API_URL}/${id}`, {
     method: "PUT",

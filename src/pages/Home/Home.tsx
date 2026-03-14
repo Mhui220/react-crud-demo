@@ -1,15 +1,13 @@
 import { useState } from "react"
-import type { User } from "../../types/User"
 import UserList from "../../components/UserList"
-import UserForm from "../../components/UserForm"
 import "./Home.css"
 import Modal from "../../components/Modal"
 import { useUsers } from "../../hooks/useUsers"
 import Pagination from "../../components/Pagination"
+import { useNavigate } from "react-router-dom"
 
 export default function Home() {
-  const { users, addUser, updateUser, deleteUser } = useUsers()
-  const [editingUser, setEditingUser] = useState<User | null>(null)
+  const { users, deleteUser } = useUsers()
   const [deleteId, setDeleteId] = useState<string | null>(null)
 
   // Pagination
@@ -19,11 +17,17 @@ export default function Home() {
   const paginatedUsers = users.slice(start, start + pageSize)
   const totalPages = Math.ceil(users.length / pageSize)
 
+  const navigate = useNavigate()
+
   return (
     <div className="content-container">
-      <h1>User CRUD Demo</h1>
-      <UserForm addUser={addUser} updateUser={updateUser} editingUser={editingUser} />
-      <UserList users={paginatedUsers} setEditingUser={setEditingUser} setDeleteId={setDeleteId} />
+      <h1>User Listing</h1>
+
+      <button onClick={() => navigate("/users/add")}>
+        Add User
+      </button>
+
+      <UserList users={paginatedUsers} setDeleteId={setDeleteId} />
       {users.length > 0 && (
         <Pagination
           page={page}

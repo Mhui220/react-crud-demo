@@ -1,13 +1,13 @@
 import { useState } from "react"
 import type { User } from "../types/User"
+import { useNavigate } from "react-router-dom"
 
 interface Props {
   users: User[]
-  setEditingUser: (user: User) => void
   setDeleteId: (id: string) => void
 }
 
-export default function UserList({ users, setEditingUser, setDeleteId }: Props) {
+export default function UserList({ users, setDeleteId }: Props) {
   const [search, setSearch] = useState("")
   const [sortAsc, setSortAsc] = useState(true)
   const toggleSort = () => {
@@ -17,6 +17,8 @@ export default function UserList({ users, setEditingUser, setDeleteId }: Props) 
   const filteredUsers = users
     .filter(u => u.name.toLowerCase().includes(search.toLowerCase()) || u.email.toLowerCase().includes(search.toLowerCase()))
     .sort((a, b) => sortAsc ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name))
+
+  const navigate = useNavigate()
 
   return (
     <div className="mt-2 px-4  w-100">
@@ -48,7 +50,7 @@ export default function UserList({ users, setEditingUser, setDeleteId }: Props) 
               <td className="border border-gray-300 px-2 py-1">
                 <button
                   className="mx-1 px-2 py-1 rounded"
-                  onClick={() => setEditingUser(user)}
+                  onClick={() => navigate(`/users/edit/${user.id}`)}
                 >
                   Edit
                 </button>

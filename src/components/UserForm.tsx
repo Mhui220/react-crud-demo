@@ -1,6 +1,7 @@
 import { useEffect } from "react"
 import { useForm } from "react-hook-form"
 import type { User } from "../types/User"
+import { useNavigate } from "react-router-dom"
 
 interface Props {
   addUser: (user: Omit<User, "id">) => void
@@ -10,6 +11,8 @@ interface Props {
 
 export default function UserForm({ addUser, updateUser, editingUser }: Props) {
   const { register, handleSubmit, reset, formState: { errors, isValid } } = useForm<{name:string,email:string}>({mode: "onChange"})
+
+  const navigate = useNavigate()
 
   useEffect(() => {
     if(editingUser){
@@ -26,6 +29,7 @@ export default function UserForm({ addUser, updateUser, editingUser }: Props) {
       addUser(data)
     }
     reset()
+    navigate("/")
   }
 
   return (
