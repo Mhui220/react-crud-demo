@@ -4,7 +4,7 @@ import type { User } from "../types/User"
 
 interface Props {
   addUser: (user: Omit<User, "id">) => void
-  updateUser: (user: User) => void
+  updateUser: (id: string, user: User) => void
   editingUser: User | null
 }
 
@@ -19,12 +19,13 @@ export default function UserForm({ addUser, updateUser, editingUser }: Props) {
     }
   }, [editingUser, reset])
 
-  const onSubmit = (data: {name:string,email:string}) => {
+  const onSubmit = async (data: {name:string,email:string}) => {
     if(editingUser){
-      updateUser({ ...editingUser, ...data })
+      updateUser(editingUser.id, { ...editingUser, ...data })
     } else {
       addUser(data)
     }
+    reset()
   }
 
   return (
