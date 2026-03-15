@@ -9,6 +9,7 @@ export default function Pagination({ page, totalPages, setPage }: Props) {
     <div className="mt-3">
 
       <button
+        className="btn btn-light"
         disabled={page === 1}
         onClick={() => setPage(page - 1)}
       >
@@ -20,6 +21,7 @@ export default function Pagination({ page, totalPages, setPage }: Props) {
       </span>
 
       <button
+        className="btn btn-light"
         disabled={page === totalPages}
         onClick={() => setPage(page + 1)}
       >

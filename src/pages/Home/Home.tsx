@@ -21,9 +21,9 @@ export default function Home() {
 
   return (
     <div className="content-container">
-      <h1>User Listing</h1>
+      <h2>User Listing</h2>
 
-      <button onClick={() => navigate("/users/add")}>
+      <button className="btn btn-light align-self-end" onClick={() => navigate("/users/add")}>
         Add User
       </button>
 

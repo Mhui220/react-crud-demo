@@ -1,6 +1,8 @@
 import { useState } from "react"
 import type { User } from "../types/User"
 import { useNavigate } from "react-router-dom"
+import { statusOptions } from "../constants/statusOptions"
+import moment from "moment"
 
 interface Props {
   users: User[]
@@ -21,7 +23,7 @@ export default function UserList({ users, setDeleteId }: Props) {
   const navigate = useNavigate()
 
   return (
-    <div className="mt-2 px-4  w-100">
+    <div className="mt-2 w-100">
       <input
         type="text"
         placeholder="Search by name or email"
@@ -39,6 +41,9 @@ export default function UserList({ users, setDeleteId }: Props) {
                 <i className={`ms-1 bi ${sortAsc ? "bi-sort-up" : "bi-sort-down"}`}></i>
               </th>
             <th className="border border-gray-300 px-2 py-1">Email</th>
+            <th className="border border-gray-300 px-2 py-1">Phone Number</th>
+            <th className="border border-gray-300 px-2 py-1">Status</th>
+            <th className="border border-gray-300 px-2 py-1">Created Time</th>
             <th className="border border-gray-300 px-2 py-1">Actions</th>
           </tr>
         </thead>
@@ -47,6 +52,9 @@ export default function UserList({ users, setDeleteId }: Props) {
             <tr key={user.id} className="hover:bg-gray-50">
               <td className="border border-gray-300 px-2 py-1">{user.name}</td>
               <td className="border border-gray-300 px-2 py-1">{user.email}</td>
+              <td className="border border-gray-300 px-2 py-1">{user.phone}</td>
+              <td className="border border-gray-300 px-2 py-1">{statusOptions.find(s => s.id === user.statusId)?.desc}</td>
+              <td className="border border-gray-300 px-2 py-1">{moment(user.createdAt).format("YYYY-MM-DD HH:mm")}</td>
               <td className="border border-gray-300 px-2 py-1">
                 <button
                   className="mx-1 px-2 py-1 rounded"

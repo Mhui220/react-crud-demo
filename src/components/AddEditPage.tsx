@@ -30,7 +30,10 @@ export default function AddEditPage({ addUser, updateUser }: Props) {
         <div className="d-flex flex-column align-items-center">
             <h2>{isEdit ? "Edit User" : "Add User"}</h2>
 
-            <UserForm addUser={addUser} updateUser={updateUser} editingUser={user} />
+            <div className="w-100 px-4">
+                <UserForm addUser={addUser} updateUser={updateUser} editingUser={user} />
+            </div>
+            
         </div>
     )
 }
