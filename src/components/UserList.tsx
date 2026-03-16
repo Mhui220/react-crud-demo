@@ -2,7 +2,7 @@ import { useState } from "react"
 import type { User } from "../types/User"
 import { useNavigate } from "react-router-dom"
 import { statusOptions } from "../constants/statusOptions"
-import moment from "moment"
+import { formatDate } from "../utils/dateFormat"
 
 interface Props {
   users: User[]
@@ -54,7 +54,7 @@ export default function UserList({ users, setDeleteId }: Props) {
               <td className="border border-gray-300 px-2 py-1">{user.email}</td>
               <td className="border border-gray-300 px-2 py-1">{user.phone}</td>
               <td className="border border-gray-300 px-2 py-1">{statusOptions.find(s => s.id === user.statusId)?.desc}</td>
-              <td className="border border-gray-300 px-2 py-1">{moment(user.createdAt).format("YYYY-MM-DD HH:mm")}</td>
+              <td className="border border-gray-300 px-2 py-1">{formatDate(user.createdAt)}</td>
               <td className="border border-gray-300 px-2 py-1">
                 <button
                   className="mx-1 px-2 py-1 rounded"
