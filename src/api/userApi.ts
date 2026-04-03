@@ -1,27 +1,25 @@
-import axios from "axios"
-
-const API_URL = "https://69b3f335e224ec066bdda139.mockapi.io/api/user/users"
+import api from "./api";
 
 export const getUsers = async () => {
-  const res = await axios.get(API_URL)
+  const res = await api.get('/Employees')
   return res.data
 }
 
 export const createUser = async (user: { name: string; email: string }) => {
-  const res = await axios.post(API_URL, user)
+  const res = await api.post('/Employees', user)
   return res.data
 }
 
 export const getUserDetails = async (id: string) => {
-  const res = await axios.get(`${API_URL}/${id}`)
+  const res = await api.get(`/Employees/${id}`)
   return res.data
 }
 
 export const editUser = async (id: string, user: { name: string; email: string }) => {
-  const res = await axios.put(`${API_URL}/${id}`, user)
+  const res = await api.put(`/Employees/${id}`, user)
   return res.data
 }
 
 export const removeUser = async (id: string) => {
-  await axios.delete(`${API_URL}/${id}`)
+  await api.delete(`/Employees/${id}`)
 }
