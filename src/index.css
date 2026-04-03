@@ -14,11 +14,6 @@
   width: 100vw;
 }
 
-#root {
-  background-color: #f8f9fa;
-  height: 100vh;
-}
-
 a {
   font-weight: 500;
   color: #646cff;
@@ -59,7 +54,7 @@ button:focus-visible {
 }
 
 nav {
-  background-color: #ffffff;
+  background-color: aliceblue;
   min-height: 40px;
   padding: 5px 16px;
 }
