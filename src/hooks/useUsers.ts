@@ -4,35 +4,15 @@ import { getUsers, createUser, editUser, removeUser } from "../api/userApi"
 
 export function useUsers() {
   const [users, setUsers] = useState<User[]>([])
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchUsers = async () => {
-      setLoading(true);
-
-      const maxRetries = 5;
-      const retryDelay = 100; // 100ms between retries
-      let attempt = 0;
-      let data = null;
-
-      while (attempt < maxRetries) {
-        try {
-          data = await getUsers();
-          break; // success, exit loop
-        } catch {
-          attempt++;
-          console.warn(`Attempt ${attempt} failed, retrying...`);
-          await new Promise(res => setTimeout(res, retryDelay));
-        }
+      try {
+        const data = await getUsers()
+        setUsers(data)
+      } catch (error) {
+        console.error("Failed to fetch users", error)
       }
-
-      if (data) {
-        setUsers(data);
-      } else {
-        console.error("Failed to fetch users after retries");
-      }
-
-      setLoading(false)
     }
 
     fetchUsers()
@@ -61,7 +41,6 @@ export function useUsers() {
 
   return {
     users,
-    loading,
     addUser,
     updateUser,
     deleteUser

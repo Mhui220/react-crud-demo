@@ -3,7 +3,6 @@ export interface User {
   name: string
   email: string
   phone: string
-  salary: string
   statusId: number
   createdAt: string
 }
