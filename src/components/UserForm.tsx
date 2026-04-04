@@ -5,105 +5,136 @@ import { useNavigate } from "react-router-dom"
 import { statusOptions } from "../constants/statusOptions"
 
 interface FormValues {
+  id?: string
   name: string
   email: string
   phone: string
+  salary: string
   statusId: number
 }
 
 interface Props {
-  addUser: (user: Omit<User, "id">) => void
-  updateUser: (id: string, user: User) => void
+
+  onSubmit: (data: FormValues, id?: string) => void
   editingUser: User | null
 }
 
-export default function UserForm({ addUser, updateUser, editingUser }: Props) {
-  const { register, handleSubmit, reset, formState: { errors, isValid } } = useForm<FormValues>({mode: "onChange"})
+export default function UserForm({ onSubmit, editingUser }: Props) {
+  const { register, handleSubmit, reset, formState: { errors, isValid } } = useForm<FormValues>({ mode: "onChange" })
 
   const navigate = useNavigate()
 
   useEffect(() => {
-    if(editingUser){
-      reset({ name: editingUser.name, email: editingUser.email, phone: editingUser.phone })
+    if (editingUser) {
+      reset({ 
+        id: editingUser.id, 
+        name: editingUser.name,
+        email: editingUser.email,
+        salary: editingUser.salary,
+        phone: editingUser.phone,
+        statusId: editingUser.statusId })
     } else {
-      reset({ name: "", email: "", phone: "" })
+      reset({ 
+        name: "", 
+        email: "",
+        phone: "",
+        salary: '',
+        statusId: 1 })
     }
   }, [editingUser, reset])
 
-  const onSubmit = async (data: FormValues) => {
-    if(editingUser){
-      updateUser(editingUser.id, { ...editingUser, ...data })
-    } else {
-      addUser({ ...data, statusId: 1, createdAt: new Date().toISOString()})
-    }
-    reset()
-    navigate("/")
+  const onSubmitForm = (data: FormValues) => {
+    onSubmit(data)
   }
 
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="row">
+    <form onSubmit={handleSubmit(onSubmitForm)}>
+      <div className="row py-2">
         <div className="col-3">
           <span className="me-2">Name</span>
         </div>
         <div className="col-9">
           <input
-          id="name"
-          className="col-9 form-control my-2"
-          placeholder="Name"
-          {...register("name", { required: "Name is required" })}
+            id="name"
+            className="col-9 form-control"
+            placeholder="Name"
+            {...register("name", { required: "Name is required" })}
           />
           {errors.name && <div className="err-msg">{errors.name.message}</div>}
         </div>
       </div>
 
-      <div className="row">
+      <div className="row py-2">
         <div className="col-3">
           <span className="me-2">Email</span>
         </div>
         <div className="col-9">
           <input
-          id="email"
-          className="form-control my-2"
-          placeholder="Email"
-          {...register("email", { 
-            required: "Email is required",
-            pattern: { value: /^\S+@\S+$/i, message: "Invalid email" }
-          })}
+            id="email"
+            className="form-control"
+            placeholder="Email"
+            {...register("email", {
+              required: "Email is required",
+              pattern: { value: /^\S+@\S+$/i, message: "Invalid email" }
+            })}
           />
           {errors.email && <div className="err-msg">{errors.email.message}</div>}
         </div>
       </div>
 
-      <div className="row">
+      <div className="row py-2">
         <div className="col-3">
           <span className="me-2">Phone</span>
         </div>
         <div className="col-9">
           <input
-          id="phone"
-          className="form-control my-2"
-          placeholder="Phone Number"
-          {...register("phone", { 
-            required: "Phone is required",
-            pattern: { value: /^[0-9]+$/, message: "Invalid phone number" }
-          })}
-          onInput={(e) => {
-            e.currentTarget.value = e.currentTarget.value.replace(/\D/g, "")
-          }}
+            id="phone"
+            className="form-control"
+            placeholder="Phone Number"
+            {...register("phone", {
+              required: "Phone is required",
+              pattern: { value: /^[0-9]+$/, message: "Invalid phone number" }
+            })}
+            onInput={(e) => {
+              e.currentTarget.value = e.currentTarget.value.replace(/\D/g, "")
+            }}
           />
           {errors.phone && <div className="err-msg">{errors.phone.message}</div>}
         </div>
       </div>
 
+      <div className="row py-2">
+        <div className="col-3">
+          <span className="me-2">Salary (RM)</span>
+        </div>
+        <div className="col-9">
+          <input
+            type="number"
+            min="0"
+            step="0.01"
+            id="salary"
+            className="form-control"
+            placeholder="Salary"
+            {...register("salary", {
+              required: "Salary is required",
+              valueAsNumber: true,
+              validate: value =>
+              /^\d+(\.\d{1,2})?$/.test(value.toString()) || "Max 2 decimal places"
+            })}
+          />
+          {errors.salary && <div className="err-msg">{errors.salary.message}</div>}
+        </div>
+      </div>
+
       {editingUser && (
-        <div className="row">
+        <div className="row py-2">
           <div className="col-3">
             <span className="me-2">Status</span>
           </div>
           <div className="col-9">
-            <select className="form-control my-2" id="status" {...register("statusId", { valueAsNumber: true })}>
-              {statusOptions.map((status: {id: number, desc: string}) => (
+            <select className="form-control" id="status" {...register("statusId", { valueAsNumber: true })}>
+              {statusOptions.map((status: { id: number, desc: string }) => (
                 <option key={status.id} value={status.id}>
                   {status.desc}
                 </option>
@@ -112,12 +143,13 @@ export default function UserForm({ addUser, updateUser, editingUser }: Props) {
           </div>
         </div>
       )}
-      
-      <div className="text-end">
+
+      <hr />
+      <div className="text-end mt-4">
         <button className="btn btn-light mt-2 me-2" type="button" onClick={() => navigate("/")}>Cancel</button>
         <button className="btn btn-primary mt-2" type="submit" disabled={!isValid}>{editingUser ? "Update" : "Add"} User</button>
       </div>
-      
+
     </form>
   )
 }
