@@ -7,7 +7,7 @@ import Pagination from "../../components/Pagination"
 import { useNavigate } from "react-router-dom"
 
 export default function Home() {
-  const { users, loading, deleteUser } = useUsers()
+  const { users, deleteUser } = useUsers()
   const [deleteId, setDeleteId] = useState<string | null>(null)
 
   // Pagination
@@ -20,14 +20,14 @@ export default function Home() {
   const navigate = useNavigate()
 
   return (
-    <div className="card content-container">
+    <div className="content-container">
       <h2>User Listing</h2>
 
       <button className="btn btn-light align-self-end" onClick={() => navigate("/users/add")}>
         Add User
       </button>
 
-      <UserList users={paginatedUsers} loading={loading} setDeleteId={setDeleteId} />
+      <UserList users={paginatedUsers} setDeleteId={setDeleteId} />
       {users.length > 0 && (
         <Pagination
           page={page}
