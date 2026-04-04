@@ -2,12 +2,13 @@
 
 ## Overview
 - SPA built with React + TypeScript + React Hook Form
-- Users can Add, Edit, Delete
+- Users can **Login** to access dashboardelete
 - Form validation included
 - Routing with React Router
 - Styled with CSS modules / Bootstrap
 
 ## Features
+- **User authentication**: Login only
 - Manage users with a simple UI
 - Form validation prevents invalid input
 - State management with React hooks
