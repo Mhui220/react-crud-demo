@@ -6,10 +6,11 @@ import { formatDate } from "../utils/dateFormat"
 
 interface Props {
   users: User[]
+  loading: boolean
   setDeleteId: (id: string) => void
 }
 
-export default function UserList({ users, setDeleteId }: Props) {
+export default function UserList({ users, loading, setDeleteId }: Props) {
   const [search, setSearch] = useState("")
   const [sortAsc, setSortAsc] = useState(true)
   const toggleSort = () => {
@@ -21,6 +22,10 @@ export default function UserList({ users, setDeleteId }: Props) {
     .sort((a, b) => sortAsc ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name))
 
   const navigate = useNavigate()
+
+  if (loading) {
+    return <div>Loading...</div>
+  }
 
   return (
     <div className="mt-2 w-100">
@@ -42,6 +47,7 @@ export default function UserList({ users, setDeleteId }: Props) {
               </th>
             <th className="border border-gray-300 px-2 py-1">Email</th>
             <th className="border border-gray-300 px-2 py-1">Phone Number</th>
+            <th className="border border-gray-300 px-2 py-1">Salary (MYR)</th>
             <th className="border border-gray-300 px-2 py-1">Status</th>
             <th className="border border-gray-300 px-2 py-1">Created Time</th>
             <th className="border border-gray-300 px-2 py-1">Actions</th>
@@ -53,6 +59,7 @@ export default function UserList({ users, setDeleteId }: Props) {
               <td className="border border-gray-300 px-2 py-1">{user.name}</td>
               <td className="border border-gray-300 px-2 py-1">{user.email}</td>
               <td className="border border-gray-300 px-2 py-1">{user.phone}</td>
+              <td className="border border-gray-300 px-2 py-1">{user.salary}</td>
               <td className="border border-gray-300 px-2 py-1">{statusOptions.find(s => s.id === user.statusId)?.desc}</td>
               <td className="border border-gray-300 px-2 py-1">{formatDate(user.createdAt)}</td>
               <td className="border border-gray-300 px-2 py-1">
