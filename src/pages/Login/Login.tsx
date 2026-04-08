@@ -19,7 +19,7 @@ export default function Login({ onLogin }: Props) {
     try {
       const result = await login(data)
 
-      localStorage.setItem("token", result.token);
+      sessionStorage.setItem("token", result.token);
       onLogin(result.token);
       toast.success("Login successful", {theme: "colored",});
     } catch {

@@ -29,17 +29,17 @@ function ProtectedLayout({ children, onLogout }: { children: React.ReactNode; on
 
 
 export default function App() {
-  const [token, setToken] = useState<string | null>(() => localStorage.getItem("token"));
+  const [token, setToken] = useState<string | null>(() => sessionStorage.getItem("token"));
 
   const handleLogout = () => {
     setToken(null);
-    localStorage.removeItem("token");
+    sessionStorage.removeItem("token");
   };
 
   return (
     <Router>
       <Routes>
-        {token === null && <Route path="/login" element={<Login onLogin={(t) => { localStorage.setItem("token", t); setToken(t); }} />} />}
+        {token === null && <Route path="/login" element={<Login onLogin={(t) => { sessionStorage.setItem("token", t); setToken(t); }} />} />}
         {token && (
           <>
             <Route path="/" element={<ProtectedLayout onLogout={handleLogout}><Home /></ProtectedLayout>} />
