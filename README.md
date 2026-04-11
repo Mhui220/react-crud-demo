@@ -17,6 +17,9 @@
 ## Demo
 https://react-crud-demo-three.vercel.app/
 
+## Note
+- Connects to a custom backend API hosted on Azure for login and CRUD operations
+
 ## Installation
 ```bash
 https://github.com/Mhui220/react-crud-demo.git
