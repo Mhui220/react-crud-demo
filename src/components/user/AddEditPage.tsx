@@ -1,8 +1,8 @@
 import { useNavigate, useParams } from "react-router-dom"
 import UserForm from "./UserForm"
 import { useState, useEffect } from "react"
-import { createUser, editUser, getUserDetails } from "../api/userApi"
-import type { User } from "../types/User"
+import { createUser, editUser, getUserDetails } from "../../api/userApi"
+import type { User } from "../../types/User"
 import { toast } from "react-toastify"
 
 interface FormValues {

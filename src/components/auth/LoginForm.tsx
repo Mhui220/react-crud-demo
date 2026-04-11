@@ -1,7 +1,6 @@
 import { useForm, type SubmitHandler } from "react-hook-form";
 
 interface FormValues {
-  email?: string;
   username: string;
   password: string;
 }
@@ -14,7 +13,7 @@ interface Props {
 export default function LoginForm({ defaultValues, onSubmit }: Props) {
   const { register, handleSubmit, formState: { errors, isValid } } = useForm<FormValues>({
     defaultValues,
-    mode: "onChange"
+    mode: "onChange" // validation runs when user types
   });
 
   return (
@@ -26,6 +25,7 @@ export default function LoginForm({ defaultValues, onSubmit }: Props) {
           type="input"
           className="form-control"
           placeholder="Username"
+          autoComplete="username"
           {...register("username", {
             required: "Username is required",
           })}
@@ -40,6 +40,7 @@ export default function LoginForm({ defaultValues, onSubmit }: Props) {
           type="password"
           className="form-control"
           placeholder="Password"
+          autoComplete="password"
           {...register("password", {
             required: "Password is required",
             minLength: { value: 6, message: "Minimum 6 characters" }

@@ -1,26 +1,26 @@
 import { useEffect } from "react"
 import { useForm } from "react-hook-form"
-import { type User } from "../types/User"
+import { type User } from "../../types/User"
 import { useNavigate } from "react-router-dom"
-import { statusOptions } from "../constants/statusOptions"
+import { statusOptions } from "../../constants/statusOptions"
 
-interface FormValues {
-  id?: string
-  name: string
-  email: string
-  phone: string
-  salary: string
-  statusId: number
-}
+// interface FormValues {
+//   id?: string
+//   name: string
+//   email: string
+//   phone: string
+//   salary: string
+//   statusId: number
+// }
 
 interface Props {
 
-  onSubmit: (data: FormValues, id?: string) => void
+  onSubmit: (data: User, id?: string) => void
   editingUser: User | null
 }
 
 export default function UserForm({ onSubmit, editingUser }: Props) {
-  const { register, handleSubmit, reset, formState: { errors, isValid } } = useForm<FormValues>({ mode: "onChange" })
+  const { register, handleSubmit, reset, formState: { errors, isValid } } = useForm<User>({ mode: "onChange" })
 
   const navigate = useNavigate()
 
@@ -43,13 +43,13 @@ export default function UserForm({ onSubmit, editingUser }: Props) {
     }
   }, [editingUser, reset])
 
-  const onSubmitForm = (data: FormValues) => {
+  const onSubmitForm = (data: User) => {
     onSubmit(data)
   }
 
 
   return (
-    <form onSubmit={handleSubmit(onSubmitForm)}>
+    <form onSubmit={handleSubmit(onSubmitForm)} autoComplete="off">
       <div className="row py-2">
         <div className="col-3">
           <span className="me-2">Name</span>
@@ -76,7 +76,7 @@ export default function UserForm({ onSubmit, editingUser }: Props) {
             placeholder="Email"
             {...register("email", {
               required: "Email is required",
-              pattern: { value: /^\S+@\S+$/i, message: "Invalid email" }
+              pattern: { value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: "Invalid email" }
             })}
           />
           {errors.email && <div className="err-msg">{errors.email.message}</div>}

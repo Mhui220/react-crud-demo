@@ -1,9 +1,9 @@
 import { useState } from "react"
-import UserList from "../../components/UserList"
+import UserList from "../../components/user/UserList"
 import "./Home.css"
-import Modal from "../../components/Modal"
+import Modal from "../../components/user/Modal"
 import { useUsers } from "../../hooks/useUsers"
-import Pagination from "../../components/Pagination"
+import Pagination from "../../components/user/Pagination"
 import { useNavigate } from "react-router-dom"
 
 export default function Home() {

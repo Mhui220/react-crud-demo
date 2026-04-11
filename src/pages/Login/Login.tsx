@@ -1,6 +1,6 @@
 import { toast } from "react-toastify";
 import { login } from "../../api/loginApi";
-import LoginForm from "../../components/LoginForm";
+import LoginForm from "../../components/auth/LoginForm";
 import "./Login.css"
 
 interface FormValues {
@@ -19,7 +19,6 @@ export default function Login({ onLogin }: Props) {
     try {
       const result = await login(data)
 
-      sessionStorage.setItem("token", result.token);
       onLogin(result.token);
       toast.success("Login successful", {theme: "colored",});
     } catch {

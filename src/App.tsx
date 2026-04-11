@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom"
 import Home from "./pages/Home/Home"
 import Counter from "./pages/Exercise/Count"
-import AddEditPage from "./components/AddEditPage"
+import AddEditPage from "./components/user/AddEditPage"
 import Login from "./pages/Login/Login"
 import { useState } from "react"
 import { toast, ToastContainer } from "react-toastify"

@@ -1,8 +1,8 @@
 import { useState } from "react"
-import type { User } from "../types/User"
+import type { User } from "../../types/User"
 import { useNavigate } from "react-router-dom"
-import { statusOptions } from "../constants/statusOptions"
-import { formatDate } from "../utils/dateFormat"
+import { statusOptions } from "../../constants/statusOptions"
+import { formatDate } from "../../utils/dateFormat"
 
 interface Props {
   users: User[]
