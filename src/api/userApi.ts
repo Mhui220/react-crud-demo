@@ -1,3 +1,4 @@
+import type { User } from "../types/User";
 import api from "./api";
 
 export const getUsers = async () => {
@@ -15,7 +16,7 @@ export const getUserDetails = async (id: string) => {
   return res.data
 }
 
-export const editUser = async (id: string, user: { name: string; email: string }) => {
+export const editUser = async (id: string, user: User) => {
   const res = await api.put(`/employees/${id}`, user)
   return res.data
 }

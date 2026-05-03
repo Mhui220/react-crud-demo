@@ -5,24 +5,24 @@ import AddEditPage from "./components/user/AddEditPage"
 import Login from "./pages/Login/Login"
 import { useState } from "react"
 import { toast, ToastContainer } from "react-toastify"
+import "./App.css"
 
 function ProtectedLayout({ children, onLogout }: { children: React.ReactNode; onLogout: () => void }) {
   return (
     <>
-      <nav className="p-2 border-bottom mb-4">
-        <div className="text-end">
-          <button
-            className="btn btn-link"
-            onClick={() => {
-              onLogout()
-              toast.success("Logged out successfully", {theme: "colored",})
-            }}
-          >
-            Logout
-          </button>
-        </div>
+      <nav className="p-2 border-bottom d-flex align-items-center justify-content-between">
+        <div className="text-light">Employee Portal</div>
+        <button
+          className="btn btn-link text-light py-0"
+          onClick={() => {
+            onLogout()
+            toast.success("Logged out successfully", { theme: "colored", })
+          }}
+        >
+          Logout
+        </button>
       </nav>
-      <div className="mx-4">{children}</div>
+      <div className="m-4 main-content">{children}</div>
     </>
   )
 }

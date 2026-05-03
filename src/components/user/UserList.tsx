@@ -28,7 +28,7 @@ export default function UserList({ users, loading, setDeleteId }: Props) {
   }
 
   return (
-    <div className="mt-2 w-100">
+    <div className="mt-2 w-100 table-responsive flex-grow-1">
       <input
         type="text"
         placeholder="Search by name or email"
@@ -64,13 +64,13 @@ export default function UserList({ users, loading, setDeleteId }: Props) {
               <td className="border border-gray-300 px-2 py-1">{formatDate(user.createdAt)}</td>
               <td className="border border-gray-300 px-2 py-1">
                 <button
-                  className="mx-1 px-2 py-1 rounded"
+                  className="m-1 px-2 py-1 rounded"
                   onClick={() => navigate(`/users/edit/${user.id}`)}
                 >
                   Edit
                 </button>
                 <button
-                  className="mx-1 px-2 py-1 rounded"
+                  className="m-1 px-2 py-1 rounded"
                   onClick={() => setDeleteId(user.id)}
                 >
                   Delete

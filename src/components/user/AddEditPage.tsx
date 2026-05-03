@@ -57,7 +57,7 @@ export default function AddEditPage() {
     return (
 
         <div className="card shadow">
-            <div className="card-body">
+            <div className="card-body p-0">
                 <h2>{isEdit ? "Edit User" : "Add User"}</h2>
 
                 <hr />
