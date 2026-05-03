@@ -59,9 +59,8 @@ button:focus-visible {
 }
 
 nav {
-  background-color: #ffffff;
+  background-color: #3e3d3d;
   min-height: 40px;
-  padding: 5px 16px;
 }
 
 @media (prefers-color-scheme: light) {

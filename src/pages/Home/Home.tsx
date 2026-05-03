@@ -20,7 +20,7 @@ export default function Home() {
   const navigate = useNavigate()
 
   return (
-    <div className="card content-container">
+    <div className="content-container">
       <h2>User Listing</h2>
 
       <button className="btn btn-light align-self-end" onClick={() => navigate("/users/add")}>
