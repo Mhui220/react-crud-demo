@@ -7,7 +7,7 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        target: "https://employee-admin-api-h4g2cqejepbhcbhf.southeastasia-01.azurewebsites.net",
+        target: "http://employee-api.runasp.net",
         changeOrigin: true,
         secure: false,
       },
