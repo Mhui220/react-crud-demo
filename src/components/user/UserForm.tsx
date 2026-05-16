@@ -15,12 +15,12 @@ import { statusOptions } from "../../constants/statusOptions"
 
 interface Props {
 
-  onSubmit: (data: User, id?: string) => void
+  onSubmit: (data: User, id?: string) => Promise<void>
   editingUser: User | null
 }
 
 export default function UserForm({ onSubmit, editingUser }: Props) {
-  const { register, handleSubmit, reset, formState: { errors, isValid } } = useForm<User>({ mode: "onChange" })
+  const { register, handleSubmit, reset, formState: { errors, isValid, isSubmitting } } = useForm<User>({ mode: "onChange" })
 
   const navigate = useNavigate()
 
@@ -43,8 +43,8 @@ export default function UserForm({ onSubmit, editingUser }: Props) {
     }
   }, [editingUser, reset])
 
-  const onSubmitForm = (data: User) => {
-    onSubmit(data)
+  const onSubmitForm = async (data: User) => {
+    await onSubmit(data)
   }
 
 
@@ -147,7 +147,18 @@ export default function UserForm({ onSubmit, editingUser }: Props) {
       <hr />
       <div className="text-end mt-4">
         <button className="btn btn-light mt-2 me-2" type="button" onClick={() => navigate("/")}>Cancel</button>
-        <button className="btn btn-primary mt-2" type="submit" disabled={!isValid}>{editingUser ? "Update" : "Add"} User</button>
+        <button className="btn btn-primary mt-2" type="submit" disabled={!isValid || isSubmitting}>
+          {isSubmitting ? (
+            <>
+              <span className="spinner-border spinner-border-sm me-2"></span>
+              Saving...
+            </>
+          ) : (
+            <>
+              {editingUser ? "Update" : "Add"} User
+            </>
+          )}
+        </button>
       </div>
 
     </form>

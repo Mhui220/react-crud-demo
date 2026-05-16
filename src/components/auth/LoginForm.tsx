@@ -11,7 +11,7 @@ interface Props {
 }
 
 export default function LoginForm({ defaultValues, onSubmit }: Props) {
-  const { register, handleSubmit, formState: { errors, isValid } } = useForm<FormValues>({
+  const { register, handleSubmit, formState: { errors, isValid, isSubmitting } } = useForm<FormValues>({
     defaultValues,
     mode: "onChange" // validation runs when user types
   });
@@ -49,7 +49,16 @@ export default function LoginForm({ defaultValues, onSubmit }: Props) {
         {errors.password && <div className="text-danger small mt-1">{errors.password.message}</div>}
       </div>
 
-      <button className="btn btn-primary w-100 mt-5" type="submit" disabled={!isValid}>Login</button>
+      <button className="btn btn-primary w-100 mt-5" type="submit" disabled={!isValid || isSubmitting}>
+        {isSubmitting ? (
+          <>
+            <span className="spinner-border spinner-border-sm me-2"></span>
+            Logging in...
+          </>
+        ) : (
+          'Login'
+        )}
+      </button>
     </form>
   );
 }
