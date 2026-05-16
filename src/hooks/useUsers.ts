@@ -1,69 +1,52 @@
-import { useEffect, useState } from "react"
 import type { User } from "../types/User"
 import { getUsers, createUser, editUser, removeUser } from "../api/userApi"
+import { useQueryClient, useQuery, useMutation } from "@tanstack/react-query";
+
+type UpdateUserParams = {
+  id: string;
+  user: User;
+};
 
 export function useUsers() {
-  const [users, setUsers] = useState<User[]>([])
-  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchUsers = async () => {
-      setLoading(true);
+  const queryClient = useQueryClient();
 
-      const maxRetries = 5;
-      const retryDelay = 100; // 100ms between retries
-      let attempt = 0;
-      let data = null;
+  const usersQuery = useQuery({
+    queryKey: ['users'],
+    queryFn: getUsers,
+    retry: 5,
+    retryDelay: 100,
+  });
 
-      while (attempt < maxRetries) {
-        try {
-          data = await getUsers();
-          break; // success, exit loop
-        } catch {
-          attempt++;
-          console.warn(`Attempt ${attempt} failed, retrying...`);
-          await new Promise(res => setTimeout(res, retryDelay));
-        }
-      }
+  const addUser = useMutation({
+    mutationFn: createUser,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['users'] });
+    },
+  });
 
-      if (data) {
-        setUsers(data);
-      } else {
-        console.error("Failed to fetch users after retries");
-      }
+  const updateUser = useMutation({
+    mutationFn: ({ id, user }: UpdateUserParams) => editUser(id, user),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['users'] });
+    },
+  });
 
-      setLoading(false)
-    }
-
-    fetchUsers()
-  }, [])
-
-  const addUser = async (user: Omit<User, "id">) => {
-    const newUser = await createUser(user)
-    setUsers(prev => [...prev, newUser])
-  }
-
-  const updateUser = async (id: string, user: User) => {
-    const updated = await editUser(id, user)
-
-    setUsers(prev =>
-      prev.map(u => (u.id === id ? updated : u))
-    )
-  }
-
-  const deleteUser = async (id: string) => {
-    await removeUser(id)
-
-    setUsers(prev =>
-      prev.filter(u => u.id !== id)
-    )
-  }
+  const deleteUser = useMutation({
+    mutationFn: removeUser,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['users'] });
+    },
+  });
 
   return {
-    users,
-    loading,
-    addUser,
-    updateUser,
-    deleteUser
-  }
+    users: usersQuery.data ?? [],
+    loading: usersQuery.isLoading,
+    error: usersQuery.error,
+
+    addUser: addUser.mutate,
+    updateUser: updateUser.mutate,
+    deleteUser: deleteUser.mutate,
+  };
+  
 }
