@@ -1,5 +1,5 @@
 import type { User } from "../types/User"
-import { getUsers, createUser, editUser, removeUser } from "../api/userApi"
+import { createUser, editUser, removeUser, getUsersPage } from "../api/userApi"
 import { useQueryClient, useQuery, useMutation } from "@tanstack/react-query";
 
 type UpdateUserParams = {
@@ -7,13 +7,13 @@ type UpdateUserParams = {
   user: User;
 };
 
-export function useUsers() {
+export function useUsers(page: number, pageSize: number) {
 
   const queryClient = useQueryClient();
 
   const usersQuery = useQuery({
-    queryKey: ['users'],
-    queryFn: getUsers,
+    queryKey: ['users', page, pageSize],
+    queryFn: getUsersPage,
     retry: 5,
     retryDelay: 100,
   });
