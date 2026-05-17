@@ -7,15 +7,14 @@ import Pagination from "../../components/user/Pagination"
 import { useNavigate } from "react-router-dom"
 
 export default function Home() {
-  const { users, loading, deleteUser } = useUsers()
+  const [page, setPage] = useState(1)
+  const pageSize = 10
+  const { users, loading, deleteUser } = useUsers(page, pageSize)
   const [deleteId, setDeleteId] = useState<string | null>(null)
 
   // Pagination
-  const [page, setPage] = useState(1)
-  const pageSize = 5
-  const start = (page - 1) * pageSize
-  const paginatedUsers = users.slice(start, start + pageSize)
-  const totalPages = Math.ceil(users.length / pageSize)
+  const paginatedUsers = users.data ?? []
+  const totalPages = users?.totalPages ?? 1
 
   const navigate = useNavigate()
 
@@ -28,7 +27,7 @@ export default function Home() {
       </button>
 
       <UserList users={paginatedUsers} loading={loading} setDeleteId={setDeleteId} />
-      {users.length > 0 && (
+      {paginatedUsers.length > 0 && (
         <Pagination
           page={page}
           totalPages={totalPages}

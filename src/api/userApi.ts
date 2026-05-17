@@ -1,8 +1,21 @@
 import type { User } from "../types/User";
 import api from "./api";
 
+type QueryKey = ['users', number, number]
+
 export const getUsers = async () => {
   const res = await api.get('/employees')
+  return res.data
+}
+
+export const getUsersPage = async ({ queryKey }: { queryKey: QueryKey }) => {
+  const [, page, pageSize] = queryKey
+  const res = await api.get('/employees/', {
+    params: {
+      page,
+      pageSize
+    }
+  })
   return res.data
 }
 
