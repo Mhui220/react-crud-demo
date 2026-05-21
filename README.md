@@ -2,10 +2,11 @@
 
 ## Overview
 - SPA built with React + TypeScript + React Hook Form
-- Users can **Login** to access dashboardelete
+- Users can **Login** to access dashboard
 - Form validation included
 - Routing with React Router
 - Styled with CSS modules / Bootstrap
+- Server-state management and caching with TanStack Query
 
 ## Features
 - **User authentication**: Login only
