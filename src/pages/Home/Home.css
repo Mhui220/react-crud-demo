@@ -10,3 +10,21 @@
 .err-msg {
     color: red;
 }
+
+thead th {
+  position: sticky;
+  top: 0;
+  background: #fff;
+  z-index: 2;
+  /* box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.15); */
+}
+
+thead th::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: #dee2e6;
+}

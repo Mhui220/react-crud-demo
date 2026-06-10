@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import type { User } from "../../types/User"
 import { useNavigate } from "react-router-dom"
 import { statusOptions } from "../../constants/statusOptions"
@@ -16,10 +16,11 @@ export default function UserList({ users, loading, setDeleteId }: Props) {
   const toggleSort = () => {
     setSortAsc(prev => !prev)
   }
-  
-  const filteredUsers = users
-    .filter(u => u.name.toLowerCase().includes(search.toLowerCase()) || u.email.toLowerCase().includes(search.toLowerCase()))
+
+  const filteredUsers = useMemo(() => {
+    return users.filter(u => u.name.toLowerCase().includes(search.toLowerCase()) || u.email.toLowerCase().includes(search.toLowerCase()))
     .sort((a, b) => sortAsc ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name))
+  }, [users, search, sortAsc])
 
   const navigate = useNavigate()
 
@@ -28,64 +29,68 @@ export default function UserList({ users, loading, setDeleteId }: Props) {
   }
 
   return (
-    <div className="mt-2 w-100 table-responsive flex-grow-1">
-      <input
-        type="text"
-        placeholder="Search by name or email"
-        value={search}
-        onChange={e => setSearch(e.target.value)}
-        className="mb-2 px-2 py-1 border rounded w-100"
-      />
+    <>
+      <div className="my-2 w-100">
+        <input
+          type="text"
+          placeholder="Search by name or email"
+          value={search}
+          onChange={e => setSearch(e.target.value)}
+          className="mb-2 px-2 py-1 border rounded w-100"
+        />
+      </div>
 
-      <table className="table-auto border-collapse border border-gray-300 w-100">
-        <thead>
-          <tr className="bg-gray-100">
-            <th className="border border-gray-300 px-2 py-1"
-                onClick={toggleSort} style={{cursor:"pointer"}}>
+      <div className="w-100 table-responsive flex-grow-1">
+        <table className="table-auto border-collapse border border-gray-300 w-100">
+          <thead>
+            <tr className="bg-gray-100">
+              <th className="border border-gray-300 px-2 py-1"
+                onClick={toggleSort} style={{ cursor: "pointer" }}>
                 Name
                 <i className={`ms-1 bi ${sortAsc ? "bi-sort-up" : "bi-sort-down"}`}></i>
               </th>
-            <th className="border border-gray-300 px-2 py-1">Email</th>
-            <th className="border border-gray-300 px-2 py-1">Phone Number</th>
-            <th className="border border-gray-300 px-2 py-1">Salary (MYR)</th>
-            <th className="border border-gray-300 px-2 py-1">Status</th>
-            <th className="border border-gray-300 px-2 py-1">Created Time</th>
-            <th className="border border-gray-300 px-2 py-1">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredUsers.map(user => (
-            <tr key={user.id} className="hover:bg-gray-50">
-              <td className="border border-gray-300 px-2 py-1">{user.name}</td>
-              <td className="border border-gray-300 px-2 py-1">{user.email}</td>
-              <td className="border border-gray-300 px-2 py-1">{user.phone}</td>
-              <td className="border border-gray-300 px-2 py-1">{user.salary}</td>
-              <td className="border border-gray-300 px-2 py-1">{statusOptions.find(s => s.id === user.statusId)?.desc}</td>
-              <td className="border border-gray-300 px-2 py-1">{formatDate(user.createdAt)}</td>
-              <td className="border border-gray-300 px-2 py-1">
-                <button
-                  className="m-1 px-2 py-1 rounded"
-                  onClick={() => navigate(`/users/edit/${user.id}`)}
-                >
-                  Edit
-                </button>
-                <button
-                  className="m-1 px-2 py-1 rounded"
-                  onClick={() => setDeleteId(user.id)}
-                >
-                  Delete
-                </button>
-              </td>
+              <th className="border border-gray-300 px-2 py-1">Email</th>
+              <th className="border border-gray-300 px-2 py-1">Phone Number</th>
+              <th className="border border-gray-300 px-2 py-1">Salary (MYR)</th>
+              <th className="border border-gray-300 px-2 py-1">Status</th>
+              <th className="border border-gray-300 px-2 py-1">Created Time</th>
+              <th className="border border-gray-300 px-2 py-1">Actions</th>
             </tr>
-          ))}
-          {filteredUsers.length === 0 && (
-            <tr>
-              <td colSpan={3} className="text-center py-2">No users found</td>
-            </tr>
-          )}
-        </tbody>
-      </table>
-    </div>
+          </thead>
+          <tbody>
+            {filteredUsers.map(user => (
+              <tr key={user.id} className="hover:bg-gray-50">
+                <td className="border border-gray-300 px-2 py-1">{user.name}</td>
+                <td className="border border-gray-300 px-2 py-1">{user.email}</td>
+                <td className="border border-gray-300 px-2 py-1">{user.phone}</td>
+                <td className="border border-gray-300 px-2 py-1">{user.salary}</td>
+                <td className="border border-gray-300 px-2 py-1">{statusOptions.find(s => s.id === user.statusId)?.desc}</td>
+                <td className="border border-gray-300 px-2 py-1">{formatDate(user.createdAt)}</td>
+                <td className="border border-gray-300 px-2 py-1">
+                  <button
+                    className="m-1 px-2 py-1 rounded"
+                    onClick={() => navigate(`/users/edit/${user.id}`)}
+                  >
+                    Edit
+                  </button>
+                  <button
+                    className="m-1 px-2 py-1 rounded"
+                    onClick={() => setDeleteId(user.id)}
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
+            {filteredUsers.length === 0 && (
+              <tr>
+                <td colSpan={3} className="text-center py-2">No users found</td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+    </>
     
   )
 }
